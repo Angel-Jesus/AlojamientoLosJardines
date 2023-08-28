@@ -114,7 +114,7 @@ class ConsultaActivity : AppCompatActivity() {
                 binding.recyclerClientes.layoutManager = LinearLayoutManager(this)
                 clientes.getFiltroCase.observe(this) { ListaFiltrada ->
                     binding.recyclerClientes.adapter =
-                        ClientesAdapter(ListaFiltrada) { item -> onItemSelected(item) }
+                        ClientesAdapter(ListaFiltrada) { item, indice -> onItemSelected(item, indice) }
                     binding.cantidad.text = ListaFiltrada.size.toString()
                 }
             }
@@ -177,8 +177,8 @@ class ConsultaActivity : AppCompatActivity() {
 
     }
 
-    private fun onItemSelected(clientModel: Array<String>){
-        DialogFragmentOption(clientModel,clientes).show(supportFragmentManager, "mydialogoption")
+    private fun onItemSelected(clientModel: Array<String>, indice: Int){
+        DialogFragmentOption(clientModel,indice,clientes).show(supportFragmentManager, "mydialogoption")
     }
 
     private fun messageAlert(message:String){

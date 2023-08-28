@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.alojamientolosjardines.R
 import com.example.alojamientolosjardines.data.model.ClienteModel
 
-class ClientesAdapter(private val List_clientes:ArrayList<ClienteModel>, private val onClickListener:(Array<String>) -> Unit): RecyclerView.Adapter<ClientesViewHolder>(){
+class ClientesAdapter(private val List_clientes:ArrayList<ClienteModel>, private val onClickListener:(Array<String>, Int) -> Unit): RecyclerView.Adapter<ClientesViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientesViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ClientesViewHolder(layoutInflater.inflate(R.layout.item_clientes,parent,false))

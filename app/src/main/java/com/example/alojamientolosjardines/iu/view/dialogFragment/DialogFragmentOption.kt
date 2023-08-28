@@ -11,7 +11,7 @@ import com.example.alojamientolosjardines.data.model.ClienteModel
 import com.example.alojamientolosjardines.iu.viewmodel.ClienteViewModel
 import com.google.android.material.textfield.TextInputEditText
 
-class DialogFragmentOption(private val dataClient: Array<String>, private val client:ClienteViewModel): DialogFragment() {
+class DialogFragmentOption(private var dataClient: Array<String>, private val indice: Int, private val client:ClienteViewModel): DialogFragment() {
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{
@@ -21,33 +21,19 @@ class DialogFragmentOption(private val dataClient: Array<String>, private val cl
             alertDialog.setPositiveButton("Actualizar Registro") { btn, _ ->
                 val txt = dialog?.findViewById<TextInputEditText>(R.id.edit_cambio)
                 val cambio = txt?.text.toString()
-                val updateData = arrayOf(
-                    dataClient[0],
-                    dataClient[1],
-                    dataClient[2],
-                    dataClient[3],
-                    dataClient[4],
-                    dataClient[5],
-                    dataClient[6],
-                    dataClient[7],
-                    "UPDATE",
-                    dataClient[8])
-                
-                for(i in updateData.indices){
-                    print("${updateData[i]},")
+                dataClient[indice] = cambio
+                /*
+                for(i in dataClient.indices){
+                    print("${dataClient[i]}")
+                    println()
                 }
                 println()
-                for(i in updateData.indices){
-                    if(updateData[i] == "C"){
-                        updateData[i] = cambio
-                        break
-                    }
-                }
-                client.isClient.postValue(updateData)
+                */
+                client.isClient.postValue(dataClient)
                 btn.cancel()
             }
             alertDialog.setNegativeButton("Eliminar Registro"){btn,_ ->
-                val deleteData = arrayOf(" ", " ", " ", " ", " ", " ", " ", " ","DELETE", dataClient[8])
+                val deleteData = arrayOf(" ", " ", " ", " ", " ", " ", " ", " ","DELETE", dataClient[9])
                 client.isClient.postValue(deleteData)
                 btn.cancel()
             }

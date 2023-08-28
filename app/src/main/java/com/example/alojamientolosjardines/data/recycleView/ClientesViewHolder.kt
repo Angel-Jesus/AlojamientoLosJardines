@@ -10,7 +10,7 @@ class ClientesViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val binding = ItemClientesBinding.bind(view)
 
     @SuppressLint("SetTextI18n")
-    fun render(clientModel: ClienteModel, onClickListener:(Array<String>) -> Unit) {
+    fun render(clientModel: ClienteModel, onClickListener:(Array<String>, Int) -> Unit) {
         binding.editHabitacion.text = clientModel.habitacion
         binding.editFecha.text = clientModel.fecha
         binding.editHora.text = clientModel.hora
@@ -29,47 +29,40 @@ class ClientesViewHolder(view: View): RecyclerView.ViewHolder(view) {
             clientModel.precio,
             clientModel.procedencia,
             clientModel.observaciones,
+            "UPDATE",
             clientModel.id
         )
 
         binding.editHabitacion.setOnClickListener {
-            clientChange[0] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 0)
         }
 
         binding.editFecha.setOnClickListener {
-            clientChange[1] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 1)
         }
 
         binding.editHora.setOnClickListener {
-            clientChange[2] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 2)
         }
 
         binding.editApellidos.setOnClickListener {
-            clientChange[3] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 3)
         }
 
         binding.editDni.setOnClickListener {
-            clientChange[4] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 4)
         }
 
         binding.editPrecio.setOnClickListener {
-            clientChange[5] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 5)
         }
 
         binding.editProcedencia.setOnClickListener {
-            clientChange[6] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 6)
         }
 
         binding.editObservacion.setOnClickListener {
-            clientChange[7] = "C"
-            onClickListener(clientChange)
+            onClickListener(clientChange, 7)
         }
     }
 }
