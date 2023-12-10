@@ -20,7 +20,6 @@ class ClienteViewModel: ViewModel() {
     val isLoadingStatic = MutableLiveData<Boolean>()
     val getFiltroCase = MutableLiveData<ArrayList<ClienteModel>>()
     val errorConnectionSend = MutableLiveData<Boolean>()
-    val lastId = MutableLiveData<Int>()
     val isClient = MutableLiveData<Array<String>>()
     val incomeTotal = MutableLiveData<Int>()
     var getClienteCase = GetClienteCase()
@@ -32,12 +31,10 @@ class ClienteViewModel: ViewModel() {
             isLoading.postValue(true)
             val result = getClienteCase() //lista de todos los cliente de la base de datos
             if(!result.isNullOrEmpty()){
-                val id = result[result.size - 1].id.toInt()
                 val data = filter.getClient(pos, mes, txt.lowercase(), result)
                 val income = filter.getIncomeTotal(data)
                 getFiltroCase.postValue(data)
                 incomeTotal.postValue(income)
-                lastId.postValue(id)
             }
             isLoading.postValue(false)
         }
@@ -50,7 +47,6 @@ class ClienteViewModel: ViewModel() {
             val request = RequestClienteCase(data)
             val response = request()
             errorConnectionSend.postValue(response)
-            if(response){ lastId.postValue(0) }
             isLoadingProgress.postValue(true)
         }
     }

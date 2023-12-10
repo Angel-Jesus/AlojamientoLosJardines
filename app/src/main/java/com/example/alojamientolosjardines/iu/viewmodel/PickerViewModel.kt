@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.alojamientolosjardines.data.picker.PickerDate
 import com.example.alojamientolosjardines.data.picker.PickerTime
+import com.example.alojamientolosjardines.iu.view.dialogFragment.DialogFragmentOption
 
 class PickerViewModel: ViewModel() {
     val date = MutableLiveData<String>()

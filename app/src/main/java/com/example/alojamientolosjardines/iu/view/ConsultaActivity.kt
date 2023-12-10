@@ -110,7 +110,9 @@ class ConsultaActivity : AppCompatActivity() {
         clientes.isLoading.observe(this) {
             binding.progressBar.isGone = it.not()
             binding.recyclerClientes.isGone = it
-            if (it.not() && binding.spinnerFiltro.selectedItemPosition == 0) {
+            if (it.not() && binding.spinnerFiltro.selectedItemPosition == 0)
+            {
+                binding.recyclerClientes.setHasFixedSize(true)
                 binding.recyclerClientes.layoutManager = LinearLayoutManager(this)
                 clientes.getFiltroCase.observe(this) { ListaFiltrada ->
                     binding.recyclerClientes.adapter =
@@ -178,7 +180,7 @@ class ConsultaActivity : AppCompatActivity() {
     }
 
     private fun onItemSelected(clientModel: Array<String>, indice: Int){
-        DialogFragmentOption(clientModel,indice,clientes).show(supportFragmentManager, "mydialogoption")
+        DialogFragmentOption(this, clientModel,indice,clientes).show(supportFragmentManager, "mydialogoption")
     }
 
     private fun messageAlert(message:String){

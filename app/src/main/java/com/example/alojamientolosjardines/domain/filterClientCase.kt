@@ -18,7 +18,11 @@ class filterClientCase {
         val monthString = if(monthSelected < 10){ "0$monthSelected" }else{ monthSelected.toString() }
         val itResult = lista.size
         var counter = 0
-        for(i in (itResult - 1) downTo 0){
+        println(lista[0].fecha)
+        println(date)
+        println(lista[0].fecha.substring(3,10))
+        for(i in (itResult - 1) downTo 0)
+        {
             when(pos){
                 0 -> {
                     if(lista[i].fecha.substring(3,10) == date){

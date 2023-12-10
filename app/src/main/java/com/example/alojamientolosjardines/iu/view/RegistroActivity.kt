@@ -5,14 +5,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewModelScope
 import com.example.alojamientolosjardines.R
 import com.example.alojamientolosjardines.data.network.NetworkConnection
 import com.example.alojamientolosjardines.databinding.ActivityRegistroBinding
 import com.example.alojamientolosjardines.iu.view.alertView.DialogProgressShow
 import com.example.alojamientolosjardines.iu.viewmodel.ClienteViewModel
 import com.example.alojamientolosjardines.iu.viewmodel.PickerViewModel
-import kotlinx.coroutines.launch
 
 class RegistroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroBinding
@@ -21,7 +19,6 @@ class RegistroActivity : AppCompatActivity() {
     private val loadingView = DialogProgressShow(this)
     private lateinit var networkConnection: NetworkConnection
     var state = false
-    var id = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,21 +27,7 @@ class RegistroActivity : AppCompatActivity() {
         //Toolbar
         toolbar_back()
 
-        binding.btnGuardar.isEnabled = false
-        binding.btnConsulta.isEnabled = false
-
         //LiveData
-        clientes.lastId.observe(this) {
-            id = it
-            if (id != 0) {
-                binding.btnGuardar.isEnabled = true
-                binding.btnConsulta.isEnabled = true
-            } else {
-                binding.btnGuardar.isEnabled = false
-                binding.btnConsulta.isEnabled = false
-            }
-        }
-
         picker.date.observe(this) {
             binding.editFecha.setText(it)
         }
@@ -82,13 +65,13 @@ class RegistroActivity : AppCompatActivity() {
         }
 
         binding.btnGuardar.setOnClickListener {
-            getDataToSend(id)
+            getDataToSend()
         }
 
         binding.btnConsulta.setOnClickListener { startActivity(Intent(this, ConsultaActivity::class.java)) }
     }
 
-    private fun getDataToSend(Id:Int){
+    private fun getDataToSend(){
         val Habitacion = binding.editHabitaciones.text.toString()
         val date = binding.editFecha.text.toString()
         val Hora = binding.editHora.text.toString()
@@ -101,16 +84,23 @@ class RegistroActivity : AppCompatActivity() {
         //------Condicion de que los campos obligatorios no esten vacios-----
         val conditional = Habitacion.isEmpty().not() && date.isEmpty().not() && Hora.isEmpty().not() && AyN.isEmpty().not() && Dni.isEmpty().not() && Precio.isEmpty().not() && Procedencia.isEmpty().not()
 
-        if(conditional){
+        if(conditional)
+        {
+            val data = arrayOf(Habitacion,date,Hora,AyN,Dni,Precio,Procedencia,Observaciones,"POST","'")
+            clientes.onSendRequest(data)
+            /*
             if(Id != 0){
-                val data = arrayOf("'$Habitacion",date,Hora,AyN,"'$Dni","'$Precio",Procedencia,Observaciones,"POST","'${Id+1}")
+                val data = arrayOf("'$Habitacion",date,Hora,AyN,"'$Dni","'$Precio",Procedencia,Observaciones,"POST","'")
                 clientes.onSendRequest(data)
             }else{
                 //Mostrar mensaje de error, por posible mala conexion a internet
                 val txt = "No se pudo acceder a la base de datos. Revice su conexion a internet"
                 messageAlert(txt)
             }
-        }else{
+            */
+        }
+        else
+        {
             val txt = "Asegurese de no dejar un campo vacio. Rellene correctamente los datos requeridos, solo el campo de observaciones no es obligatorio rellenar."
             messageAlert(txt)
         }

@@ -22,7 +22,7 @@ object RetrofitHelper {
 
     fun requestRetrofitData(): Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://docs.google.com/forms/d/e/")
+            .baseUrl("https://script.google.com/macros/s/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(OkHttpClient())
             .addConverterFactory(ScalarsConverterFactory.create())
