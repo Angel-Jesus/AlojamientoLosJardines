@@ -4,14 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.alojamientolosjardines.data.model.ClienteModel
-import com.example.alojamientolosjardines.data.model.StatiticProvider
 import com.example.alojamientolosjardines.domain.GetClienteCase
 import com.example.alojamientolosjardines.domain.RequestClienteCase
 import com.example.alojamientolosjardines.domain.StaticClientCase
 import com.example.alojamientolosjardines.domain.filterClientCase
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ClienteViewModel: ViewModel() {
 

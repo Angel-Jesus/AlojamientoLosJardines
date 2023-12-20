@@ -11,6 +11,7 @@ import com.example.alojamientolosjardines.databinding.ActivityRegistroBinding
 import com.example.alojamientolosjardines.iu.view.alertView.DialogProgressShow
 import com.example.alojamientolosjardines.iu.viewmodel.ClienteViewModel
 import com.example.alojamientolosjardines.iu.viewmodel.PickerViewModel
+import com.example.alojamientolosjardines.iu.viewmodel.RoomViewModel
 
 class RegistroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegistroBinding
@@ -88,16 +89,6 @@ class RegistroActivity : AppCompatActivity() {
         {
             val data = arrayOf(Habitacion,date,Hora,AyN,Dni,Precio,Procedencia,Observaciones,"POST","'")
             clientes.onSendRequest(data)
-            /*
-            if(Id != 0){
-                val data = arrayOf("'$Habitacion",date,Hora,AyN,"'$Dni","'$Precio",Procedencia,Observaciones,"POST","'")
-                clientes.onSendRequest(data)
-            }else{
-                //Mostrar mensaje de error, por posible mala conexion a internet
-                val txt = "No se pudo acceder a la base de datos. Revice su conexion a internet"
-                messageAlert(txt)
-            }
-            */
         }
         else
         {

@@ -28,6 +28,5 @@ object RetrofitHelper {
             .addConverterFactory(ScalarsConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-
     }
 }

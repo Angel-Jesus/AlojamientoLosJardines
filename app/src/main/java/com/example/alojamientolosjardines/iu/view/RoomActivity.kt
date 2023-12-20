@@ -6,15 +6,28 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isGone
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.alojamientolosjardines.R
+import com.example.alojamientolosjardines.data.model.RoomModel
+import com.example.alojamientolosjardines.data.recycleView.BedAdapter
 import com.example.alojamientolosjardines.databinding.ActivityRoomBinding
+import com.example.alojamientolosjardines.iu.view.alertView.DialogProgressShow
+import com.example.alojamientolosjardines.iu.view.dialogFragment.DialogFragmentOption
 import com.example.alojamientolosjardines.iu.view.dialogFragment.DialogFragmentSetting
 import com.example.alojamientolosjardines.iu.viewmodel.RoomViewModel
 
 class RoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomBinding
     private val room : RoomViewModel by viewModels()
-    private var stateList = ArrayList<Boolean>()
+    private var isGetFinish = false
+    private var listStateRoom = ArrayList<RoomModel>()
+    private val loadingView = DialogProgressShow(this)
+    private var positionItem = 0
+    private var state = false
+    private lateinit var adapter: BedAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,101 +36,99 @@ class RoomActivity : AppCompatActivity() {
 
         toolbarBack()
 
-        val imagenButtonBinding = listOf(
-            binding.h101,
-            binding.h102,
-            binding.h103,
-            binding.h104,
-            binding.h105,
-            binding.h106,
-            binding.h107,
-            binding.h108,
-            binding.h201,
-            binding.h202,
-            binding.h203,
-            binding.h204,
-            binding.h205,
-            binding.h206,
-            binding.h207)
-
-        val stateRoomBinding = listOf(
-            binding.L101,
-            binding.L102,
-            binding.L103,
-            binding.L104,
-            binding.L105,
-            binding.L106,
-            binding.L107,
-            binding.L108,
-            binding.L201,
-            binding.L202,
-            binding.L203,
-            binding.L204,
-            binding.L205,
-            binding.L206,
-            binding.L207,
-        )
-
-        val priceRoomBinding = listOf(
-            binding.h101S,
-            binding.h102S,
-            binding.h103S,
-            binding.h104S,
-            binding.h105S,
-            binding.h106S,
-            binding.h107S,
-            binding.h108S,
-            binding.h201S,
-            binding.h202S,
-            binding.h203S,
-            binding.h204S,
-            binding.h205S,
-            binding.h206S,
-            binding.h207S,
-        )
-
-
-        room.roomStateList.observe(this, {
-            stateList = it
-            for(i in stateList.indices){
-                if(stateList[i]){
-                    imagenButtonBinding[i].setImageResource(R.drawable.habitacion_off)
-                    stateRoomBinding[i].setText(R.string.Ho)
-                }else{
-                    imagenButtonBinding[i].setImageResource(R.drawable.habitacion_on)
-                    stateRoomBinding[i].setText(R.string.Hd)
+        room.roomList.observe(this){ list_room ->
+            listStateRoom = list_room
+            //println(isGetFinish)
+            if(listStateRoom.size != 0 && isGetFinish)
+            {
+                adapter = BedAdapter(this, listStateRoom){ BedState ->
+                    onItemSelected(
+                        BedState
+                    )
                 }
+                binding.recycleBed.setHasFixedSize(true)
+                val linearLayoutManager = LinearLayoutManager(this)
+                linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+                binding.recycleBed.layoutManager = linearLayoutManager
+                binding.recycleBed.adapter = adapter
+                //BedAdapter(this, listStateRoom){pos -> onItemSelected(pos)}
             }
-        })
 
-        room.roomPriceList.observe(this, {
-            for(i in it.indices){
-                priceRoomBinding[i].text = it[i]
+        }
+
+        room.isLoadingGet.observe(this){
+            if(!it)
+            {
+                binding.isLoading.isGone = false
+                binding.recycleBed.isGone = true
+                isGetFinish = false
             }
-        })
+            else
+            {
+                binding.isLoading.isGone = true
+                binding.recycleBed.isGone = false
+                isGetFinish = true
+            }
+        }
 
-        binding.h101.setOnClickListener { room.onSaveState(0,stateList[0].not()) }
-        binding.h102.setOnClickListener { room.onSaveState(1,stateList[1].not()) }
-        binding.h103.setOnClickListener { room.onSaveState(2,stateList[2].not()) }
-        binding.h104.setOnClickListener { room.onSaveState(3,stateList[3].not()) }
-        binding.h105.setOnClickListener { room.onSaveState(4,stateList[4].not()) }
-        binding.h106.setOnClickListener { room.onSaveState(5,stateList[5].not()) }
-        binding.h107.setOnClickListener { room.onSaveState(6,stateList[6].not()) }
-        binding.h108.setOnClickListener { room.onSaveState(7,stateList[7].not()) }
-        binding.h201.setOnClickListener { room.onSaveState(8,stateList[8].not()) }
-        binding.h202.setOnClickListener { room.onSaveState(9,stateList[9].not()) }
-        binding.h203.setOnClickListener { room.onSaveState(10,stateList[10].not()) }
-        binding.h204.setOnClickListener { room.onSaveState(11,stateList[11].not()) }
-        binding.h205.setOnClickListener { room.onSaveState(12,stateList[12].not()) }
-        binding.h206.setOnClickListener { room.onSaveState(13,stateList[13].not()) }
-        binding.h207.setOnClickListener { room.onSaveState(14,stateList[14].not()) }
+        room.isLoadingSend.observe(this) {
+            if (it.not()) {
+                loadingView.star()
+                state = true
+            } else if (state) {
+                loadingView.close()
+                state = it.not()
+            }
+        }
+
+        room.isOK.observe(this){
+            if(it.not())
+            {
+                messageAlertError()
+            }
+            else
+            {
+                adapter.notifyItemChanged(positionItem)
+            }
+        }
 
     }
 
     override fun onStart() {
         super.onStart()
-        room.onGetState()
-        room.onGetPrice()
+        room.onGetListStateRoom()
+    }
+
+    private fun onItemSelected(position: Int){
+        positionItem = position
+        messageAlert(position.toString())
+    }
+
+
+    private fun messageAlert(position: String){
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Mensaje: Actualización ")
+        alert.setMessage("Esta por actualizar la disponibilidad de la habitación. ¿Desea continuar?")
+        alert.setCancelable(true)
+        alert.setPositiveButton("Actualizar"){btn, _ ->
+            room.onSendStateRoom(arrayOf("SEND", position, ""), listStateRoom, position.toInt())
+            btn.cancel()
+        }
+        alert.setNegativeButton("NO"){btn, _ ->
+            btn.cancel()
+        }
+        alert.show()
+    }
+
+    private fun messageAlertError(){
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle("Mensaje: Error ")
+        alert.setMessage("Ocurrio un problema, se requiere volver a enviar la solicitud de actualizacion")
+        alert.setCancelable(true)
+        alert.setPositiveButton("OK"){btn, _ ->
+            btn.cancel()
+        }
+        alert.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

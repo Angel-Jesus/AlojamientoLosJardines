@@ -27,7 +27,7 @@ class DialogFragmentSetting : DialogFragment() {
 
                 for(i in numberRoom.indices){
                     if( numberRoom[i] == room){
-                        priceModel.onSavePrice(i,price)
+                        //priceModel.onSavePrice(i,price)
                         break
                     }
                 }

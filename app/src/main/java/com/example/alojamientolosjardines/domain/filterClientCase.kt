@@ -1,7 +1,6 @@
 package com.example.alojamientolosjardines.domain
 
 import com.example.alojamientolosjardines.data.model.ClienteModel
-import com.example.alojamientolosjardines.data.model.StatiticProvider
 import java.util.*
 
 class filterClientCase {
@@ -18,9 +17,6 @@ class filterClientCase {
         val monthString = if(monthSelected < 10){ "0$monthSelected" }else{ monthSelected.toString() }
         val itResult = lista.size
         var counter = 0
-        println(lista[0].fecha)
-        println(date)
-        println(lista[0].fecha.substring(3,10))
         for(i in (itResult - 1) downTo 0)
         {
             when(pos){

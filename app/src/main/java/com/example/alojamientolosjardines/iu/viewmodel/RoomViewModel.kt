@@ -3,32 +3,49 @@ package com.example.alojamientolosjardines.iu.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.alojamientolosjardines.di.DatabaseModule
+import com.example.alojamientolosjardines.data.RoomRepository
+import com.example.alojamientolosjardines.data.model.RoomModel
+import com.example.alojamientolosjardines.domain.GetStateRoom
+import com.example.alojamientolosjardines.domain.SendStateRoom
 import kotlinx.coroutines.launch
 
 class RoomViewModel: ViewModel() {
-    val roomStateList = MutableLiveData<ArrayList<Boolean>>()
-    val roomPriceList = MutableLiveData<ArrayList<String>>()
-    private val roomProvider = DatabaseModule.roomProvider
+    private val roomRepository = RoomRepository()
+    val roomList = MutableLiveData<ArrayList<RoomModel>>()
+    val isLoadingGet = MutableLiveData<Boolean>()
+    val isLoadingSend = MutableLiveData<Boolean>()
+    val getStateRoom = GetStateRoom()
+    val isOK = MutableLiveData<Boolean>()
 
-    fun onGetState(){
-        val stateRoomList = roomProvider.getStateRoom()
-        roomStateList.postValue(stateRoomList)
+    fun onGetListStateRoom(){
+        viewModelScope.launch {
+            isLoadingGet.postValue(false)
+            val stateRoomList1 = getStateRoom()
+            if(stateRoomList1.isNotEmpty())
+            {
+                isLoadingGet.postValue(true)
+                val listStateRoom = roomRepository.getListRoom(stateRoomList1)
+                roomList.postValue(listStateRoom)
+            }
+        }
     }
 
-    fun onGetPrice(){
-        val priceRoomList = roomProvider.getPriceRoom()
-        roomPriceList.postValue(priceRoomList)
+    fun onSendStateRoom(stateRoom: Array<String>, stateRoomInit: ArrayList<RoomModel>,position: Int){
+        viewModelScope.launch {
+            isLoadingSend.postValue(false)
+            val response = SendStateRoom(stateRoom)()
+            isLoadingSend.postValue(true)
+            if (response)
+            {
+                val state = if(stateRoomInit[position].roomState == "DISPONIBLE"){ "OCUPADO" }else{ "DISPONIBLE" }
+                stateRoomInit[position].roomState = state
+                roomList.postValue(stateRoomInit)
+                isOK.postValue(true)
+            }
+            else
+            {
+                isOK.postValue(false) // ocurrio un problema
+            }
+        }
     }
-
-    fun onSaveState(i:Int, state:Boolean){
-        roomProvider.saveStateRoom(i,state)
-        onGetState()
-    }
-
-    fun onSavePrice(i:Int, price:String){
-        roomProvider.savePriceRoom(i,"S/.$price")
-        onGetPrice()
-    }
-
 }

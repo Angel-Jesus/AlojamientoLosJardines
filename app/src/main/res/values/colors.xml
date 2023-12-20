@@ -13,5 +13,7 @@
     <color name="green">#94FB94</color>
 
     <color name="background_head_table">#BF272D</color>
+    <color name="bed_green">#1D7E1D</color>
+    <color name="bed_red">#AC292D</color>
 
 </resources>
