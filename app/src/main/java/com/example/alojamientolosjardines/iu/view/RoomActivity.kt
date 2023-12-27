@@ -38,7 +38,6 @@ class RoomActivity : AppCompatActivity() {
 
         room.roomList.observe(this){ list_room ->
             listStateRoom = list_room
-            //println(isGetFinish)
             if(listStateRoom.size != 0 && isGetFinish)
             {
                 adapter = BedAdapter(this, listStateRoom){ BedState ->
@@ -51,7 +50,6 @@ class RoomActivity : AppCompatActivity() {
                 linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
                 binding.recycleBed.layoutManager = linearLayoutManager
                 binding.recycleBed.adapter = adapter
-                //BedAdapter(this, listStateRoom){pos -> onItemSelected(pos)}
             }
 
         }
@@ -91,7 +89,6 @@ class RoomActivity : AppCompatActivity() {
                 adapter.notifyItemChanged(positionItem)
             }
         }
-
     }
 
     override fun onStart() {

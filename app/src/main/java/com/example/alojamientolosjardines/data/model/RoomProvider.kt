@@ -4,15 +4,19 @@ import android.annotation.SuppressLint
 import android.content.Context
 
 class RoomProvider(context: Context){
-    private val roomStateKey = "roomStateKey"
+
     private val roomPriceKey = "roomPriceKey"
     //private val roomNumberKey = "roomNumberKey"
+    //private val roomStateKey = "roomStateKey"
 
     val roomNumber = listOf("101","102","103","104","105","106","107","108","201","202","203","204","205","206","207")
 
-    private val settingState = context.getSharedPreferences(roomStateKey,0)
+
     private val settingPrice = context.getSharedPreferences(roomPriceKey,0)
-    //private val settingRoom = context.getSharedPreferences(roomNumberKey,0)
+
+    /*
+    private val settingRoom = context.getSharedPreferences(roomNumberKey,0)
+    private val settingState = context.getSharedPreferences(roomStateKey,0)
 
     @SuppressLint("CommitPrefEdits")
     fun saveStateRoom(i:Int, state:Boolean){
@@ -26,6 +30,7 @@ class RoomProvider(context: Context){
         }
         return stateRoom
     }
+    */
 
     fun savePriceRoom(i:Int, price:String){
         settingPrice.edit().putString(roomNumber[i],price).apply()

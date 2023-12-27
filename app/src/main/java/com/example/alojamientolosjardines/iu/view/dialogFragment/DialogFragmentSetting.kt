@@ -1,5 +1,6 @@
 package com.example.alojamientolosjardines.iu.view.dialogFragment
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -12,8 +13,9 @@ import com.google.android.material.textfield.TextInputEditText
 
 class DialogFragmentSetting : DialogFragment() {
     private val numberRoom = DatabaseModule.roomProvider.roomNumber
-    private val priceModel : RoomViewModel by viewModels()
+    private val priceRoom  = DatabaseModule.roomProvider
 
+    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val alertDialog = AlertDialog.Builder(it)
@@ -27,7 +29,7 @@ class DialogFragmentSetting : DialogFragment() {
 
                 for(i in numberRoom.indices){
                     if( numberRoom[i] == room){
-                        //priceModel.onSavePrice(i,price)
+                        priceRoom.savePriceRoom(i,price)
                         break
                     }
                 }
