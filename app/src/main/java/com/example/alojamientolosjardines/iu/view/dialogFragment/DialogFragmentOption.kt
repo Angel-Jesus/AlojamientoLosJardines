@@ -1,10 +1,12 @@
 package com.example.alojamientolosjardines.iu.view.dialogFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -25,33 +27,64 @@ class DialogFragmentOption(val activity: AppCompatActivity, private var dataClie
         val btnDelete = rootView.findViewById<Button>(R.id.btnDelete)
         val btnUpdate = rootView.findViewById<Button>(R.id.btnUpdate)
         val dataInput = rootView.findViewById<TextInputEditText>(R.id.edit_cambio)
+        val textIndice = rootView.findViewById<TextView>(R.id.txtMensaje)
 
-        if(indice in 1..2)
-        {
-            dataInput.isFocusable = false
+        when(indice){
+
+            0 -> {
+                textIndice.text = "¿Desea cambiar el numero de habitación?"
+            }
+
+            1 -> {
+                textIndice.text = "¿Desea cambiar la fecha?"
+                dataInput.isFocusable = false
+            }
+
+            2 ->{
+                textIndice.text = "¿Desea cambiar la hora?"
+                dataInput.isFocusable = false
+            }
+
+            3 ->{
+                textIndice.text = "¿Desea cambiar el nombre?"
+            }
+
+            4 ->{
+                textIndice.text = "¿Desea cambiar el DNI?"
+            }
+
+            5 ->{
+                textIndice.text = "¿Desea cambiar el precio?"
+            }
+
+            6 ->{
+                textIndice.text = "¿Desea cambiar la procedencia?"
+            }
+
+            7 ->{
+                textIndice.text = "¿Desea cambiar la observación?"
+            }
+
         }
 
         //Para datos de fecha o hora
         dataInput.setOnClickListener {
-            if(indice in 1..2)
-            {
-                val picker: PickerViewModel by viewModels()
-
-                if(indice == 1)
-                {
+            when(indice){
+                1 -> {
+                    val picker: PickerViewModel by viewModels()
                     picker.onDate(activity)
                     picker.date.observe(this) {
                         dataInput.setText(it)
                     }
                 }
-                else
-                {
+
+                2 ->{
+                    val picker: PickerViewModel by viewModels()
                     picker.onHour(activity)
                     picker.hour.observe(this) {
                         dataInput.setText(it)
                     }
                 }
-
             }
         }
 

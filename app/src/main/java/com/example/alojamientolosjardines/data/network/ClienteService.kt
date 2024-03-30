@@ -1,5 +1,6 @@
 package com.example.alojamientolosjardines.data.network
 
+import android.util.Log
 import com.example.alojamientolosjardines.core.RetrofitHelper
 import com.example.alojamientolosjardines.data.model.ClienteModel
 import com.example.alojamientolosjardines.data.model.RoomStateModel
@@ -26,6 +27,7 @@ class ClienteService {
     suspend fun requestCliente(data:Array<String>):Boolean{
         return withContext(Dispatchers.IO){
             try {
+                data.forEach { Log.d("clientes", it)  }
                 val response = retrofitRequestClient.create(ClienteApiClient::class.java).requestCliente(
                     data[0],
                     "'${data[1]}",
