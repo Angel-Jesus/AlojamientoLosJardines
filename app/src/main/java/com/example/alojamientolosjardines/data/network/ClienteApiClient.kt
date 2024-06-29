@@ -9,10 +9,12 @@ import retrofit2.http.Url
 
 interface ClienteApiClient {
 
-    @GET("AKfycbxMAbHJYb3-XJJKcoLcb3HHrRea8mbhjy-PmtRtsw5BmxE__B3uG7J5RunMSJNzV4cN/exec")
+    // Link to connection googleSheet: ID/exec
+    
+    @GET("Link")
     suspend fun getAllCliente(): Response<List<ClienteModel>>
 
-    @GET("AKfycbxMAbHJYb3-XJJKcoLcb3HHrRea8mbhjy-PmtRtsw5BmxE__B3uG7J5RunMSJNzV4cN/exec")
+    @GET("Link")
     suspend fun requestCliente(
         @Query("habitacion") habitacion:String = "",
         @Query("fecha") fecha:String = "",
@@ -26,14 +28,14 @@ interface ClienteApiClient {
         @Query("id") id:String = ""
     ): Response<Unit>
 
-    @GET("AKfycbxMAbHJYb3-XJJKcoLcb3HHrRea8mbhjy-PmtRtsw5BmxE__B3uG7J5RunMSJNzV4cN/exec")
+    @GET("Link")
     suspend fun sendStateRoom(
         @Query("accion") accion:String = "",
         @Query("habitacion") habitacion:String = "",
         @Query("observacion") observacion:String = ""
     ): Response<Unit>
 
-    @GET("AKfycbxMAbHJYb3-XJJKcoLcb3HHrRea8mbhjy-PmtRtsw5BmxE__B3uG7J5RunMSJNzV4cN/exec")
+    @GET("Link")
     suspend fun getStateRoom(
         @Query("accion") accion:String = ""
     ): Response<List<RoomStateModel>>
